@@ -1,0 +1,82 @@
+version: "0.1"
+inputs:
+  query: str
+outputs:
+  response: str
+  attribution_result: AttributionResult
+  groundedness_scores: List[GroundednessScore]
+ui_output: response
+nodes:
+  pre_hook:
+    type: PreHookStep
+    input_mapping:
+      query: __inputs__#query
+  translate_needed_constant:
+    type: ConstantStep
+    config:
+      value: false
+      value_type_str: "bool"
+  detected_language_constant:
+    type: ConstantStep
+    config:
+      value: "en"
+      value_type_str: "str"
+  search_unstructured_data:
+    type: SearchUnstructuredDataStep
+    input_mapping:
+      query: pre_hook#query
+    ui_stream_types:
+      query_reformulation: true
+    config:
+      top_k: 8
+      search_fields: chunk, chunk.porter_stemmed
+      disable_structured_data_search: false
+      lexical_alpha: 0.25
+      semantic_alpha: 0.75
+      sparse_alpha: 0
+      knn_candidates_factor: 2
+      rerank_top_k: 10
+      reranker: ctxl-rerank-v2-instruct-multilingual-mini
+      rerank_with_embeddings: false
+      datastore_filters: ""
+      attribution: true
+      number_of_retrievals_for_attribution: 10
+      prefer_recent_docs: true
+      use_llm_for_prefer_recent_docs: false
+      reformulate_query: false
+      fuzzy_search: false
+      key_idea_extraction: false
+      query_validation_regex: ""
+      query_validation_regex_error_message: ""
+      query_regex_stripping: ""
+      should_check_retrieval_need: true
+      use_decomposition_component: false
+      enable_query_expansion: false
+      enable_query_decomposition: false
+      sparse_model: ""
+      skip_context_truncation: false
+      enable_explain_api: false
+  response_generation:
+    type: ResponseGenerationStep
+    input_mapping:
+      query: pre_hook#query
+      retrievals: search_unstructured_data#retrievals
+      translate_needed: translate_needed_constant#output
+      detected_language: detected_language_constant#output
+    ui_stream_types:
+      retrievals: true
+      generation: true
+      attribution: true
+      groundedness: true
+    config:
+      attribution_model: vertex_ai/gemini-2.5-flash
+  post_hook:
+    type: PostHookStep
+    input_mapping:
+      response: response_generation#response
+  __outputs__:
+    type: output
+    input_mapping:
+      response: post_hook#response
+      attribution_result: response_generation#attribution_result
+      groundedness_scores: response_generation#groundedness_scores
