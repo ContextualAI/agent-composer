@@ -1,0 +1,205 @@
+version: "0.1"
+inputs:
+  query: str
+outputs:
+  response: str
+ui_output: response
+nodes:
+  __outputs__:
+    type: output
+    input_mapping:
+      response: generate_from_research_step#response
+  agentic_research_step:
+    type: AgenticResearchStep
+    input_mapping:
+      message_history: create_message_history_step#message_history
+    ui_stream_types:
+      retrievals: true
+    config:
+      tools_config:
+        - name: search_log_entries
+          description: |
+            Search telecom log files for specific events, errors, warnings, and diagnostic information.
+            This tool searches parsed log data from 3GPP, LTE, 5G NR, and syslog formats.
+            Use this to find:
+            - Specific error codes and failure messages (authentication failures, timeouts, rejects)
+            - UE-specific events by IMSI, IMEI, or UE ID
+            - Protocol-specific messages (RRC, S1AP, EMM, NAS, X2AP, NGAP)
+            - Timestamp-based searches for events in a time range
+            - Severity-based filtering (ERROR, WARNING, CRITICAL)
+            - Network element logs (eNB, gNB, MME, AMF, SGW, PGW)
+            Best for: Finding specific log entries, searching by error code, UE lookup, keyword search.
+            Returns SEARCH_RESULTS with CITE_ID for citation.
+          step_config:
+            type: SearchUnstructuredDataStep
+            ui_stream_types:
+              query_reformulation: true
+            config:
+              lexical_alpha: 0.7
+              semantic_alpha: 0.3
+              enable_query_decomposition: false
+              enable_query_expansion: false
+              filter_retrievals: false
+              rerank_retrievals: true
+              rerank_top_k: 15
+              reranker: ctxl-rerank-v2-instruct-multilingual-FP8
+              reranker_score_filter_threshold: 0.2
+              should_check_retrieval_need: true
+              top_k: 50
+        - name: root_cause_analysis
+          description: |
+            Analyze log patterns to identify root causes, error correlations, and failure sequences.
+            This tool uses semantic search to find conceptually related log entries and patterns.
+            Use this to find:
+            - Root cause by tracing failures back to origin events
+            - Correlated errors that occur together (cascade failures)
+            - Temporal patterns (errors that repeat, cluster, or escalate)
+            - Procedure sequences (attach, handover, bearer setup flows)
+            - Cause-and-effect relationships between log events
+            - Statistical patterns (frequency, distribution, affected counts)
+            Best for: Understanding WHY failures occurred, finding related events, tracing sequences.
+            Returns SEARCH_RESULTS with CITE_ID for citation.
+          step_config:
+            type: SearchUnstructuredDataStep
+            ui_stream_types:
+              query_reformulation: true
+            config:
+              lexical_alpha: 0.2
+              semantic_alpha: 0.8
+              enable_query_decomposition: false
+              enable_query_expansion: false
+              filter_retrievals: false
+              rerank_retrievals: true
+              rerank_top_k: 15
+              reranker: ctxl-rerank-v2-instruct-multilingual-FP8
+              reranker_score_filter_threshold: 0.2
+              should_check_retrieval_need: true
+              top_k: 50
+        - name: search_debug_rules
+          description: |
+            Search the debug rules and knowledge base for known issues, 3GPP specifications, and resolution playbooks.
+            This tool searches documentation about how to interpret and resolve telecom errors.
+            Use this to find:
+            - 3GPP cause code definitions and meanings (cause 3, cause 17, etc.)
+            - Known issues and their documented resolutions
+            - Debug playbooks and troubleshooting procedures
+            - Protocol specifications and expected behavior
+            - Vendor-specific error interpretations
+            - Best practices for resolving common failures
+            Best for: Matching errors to known issues, finding recommended fixes, understanding error codes.
+            Returns SEARCH_RESULTS with CITE_ID for citation.
+          step_config:
+            type: SearchUnstructuredDataStep
+            ui_stream_types:
+              query_reformulation: true
+            config:
+              lexical_alpha: 0.4
+              semantic_alpha: 0.6
+              enable_query_decomposition: false
+              enable_query_expansion: false
+              filter_retrievals: false
+              rerank_retrievals: true
+              rerank_top_k: 12
+              reranker: ctxl-rerank-v2-instruct-multilingual-FP8
+              reranker_score_filter_threshold: 0.2
+              should_check_retrieval_need: true
+              top_k: 50
+      agent_config:
+        agent_loop:
+          identity_guidelines_prompt: |
+            You are a Telecom Log Analysis Agent created by Contextual AI. You analyze complex telecom logs (3GPP, LTE, 5G NR, syslog) and identify root causes of failures.
+
+            You help engineers quickly understand why calls failed, connections dropped, or network issues occurred.
+
+            Core Principles:
+            - Follow the Chain: Trace cause-and-effect through the timeline
+            - Distinguish Symptoms from Causes: A "call drop" is a symptom; find the root cause
+            - Quantify Impact: Count affected UEs, failed procedures, error frequencies
+            - Be Specific: Cite exact log entries, timestamps, and error codes
+          model_name_or_path: vertex_ai/claude-sonnet-4-5@20250929
+          num_turns: 15
+          parallel_tool_calls: false
+          research_guidelines_prompt: |
+            You have access to the following tools:
+
+            1. `search_log_entries` — Lexical-heavy search for specific log entries. Use for exact error codes, UE IDs, timestamps, specific keywords. Returns SEARCH_RESULTS with CITE_ID.
+
+            2. `root_cause_analysis` — Semantic-heavy search for patterns and root causes. Use for understanding WHY failures occurred, finding correlated events, tracing sequences. Returns SEARCH_RESULTS with CITE_ID.
+
+            3. `search_debug_rules` — Search known issues, 3GPP specs, and debug playbooks. Use to match errors to documented resolutions. Returns SEARCH_RESULTS with CITE_ID.
+
+            **Analysis Workflow:**
+
+            Step 1: FIND THE FAILURES
+            - Call `search_log_entries` to find errors and warnings
+            - Search for keywords: "failure", "reject", "error", "timeout"
+            - Note specific error codes found
+
+            Step 2: ANALYZE ROOT CAUSES
+            - Call `root_cause_analysis` for each major failure type
+            - Trace backwards from symptoms to causes
+            - Look for correlated events and cascading failures
+
+            Step 3: CHECK DEBUG RULES
+            - Call `search_debug_rules` to match errors to known issues
+            - Search for specific error codes found in Step 1
+            - Find recommended resolutions
+
+            Step 4: BUILD THE PICTURE
+            - Quantify: How many UEs affected? How many failures?
+            - Timeline: What happened first? What triggered the cascade?
+            - Categorize: Authentication, Timeout, Congestion, Configuration, Hardware
+
+            **Query Strategy:**
+            - Use telecom-specific terms: UE, IMSI, RRC, S1AP, EMM, NAS
+            - Include error codes when found: "cause 3", "cause 17"
+            - Be specific: "authentication reject IMSI" not just "error"
+  create_message_history_step:
+    type: CreateMessageHistoryStep
+    input_mapping:
+      query: __inputs__#query
+    ui_stream_types:
+      retrievals: false
+    config:
+      should_check_retrieval_need: true
+  generate_from_research_step:
+    type: GenerateFromResearchStep
+    input_mapping:
+      message_history: create_message_history_step#message_history
+      research: agentic_research_step#research
+    ui_stream_types:
+      generation: true
+    config:
+      identity_guidelines_prompt: |
+        You are a Telecom Log Analysis Agent created by Contextual AI.
+        You analyze complex telecom logs and identify root causes of failures.
+      model_name_or_path: vertex_ai/claude-sonnet-4-5@20250929
+      response_guidelines_prompt: |
+        Generate a log analysis response structured as follows:
+
+        ## Executive Summary
+        Brief overview of findings (2-3 sentences). Lead with the answer.
+
+        ## Root Causes Identified
+
+        **1. [Root Cause Category]**
+        - **What**: Description of the failure
+        - **Impact**: Number of affected UEs/procedures
+        - **Evidence**: Specific log entries with timestamps (cited)
+        - **Cause Code**: 3GPP/vendor error code if applicable
+
+        ## Timeline of Key Events
+        - `[timestamp]` - Event description
+
+        ## Recommendations
+        - Suggested next steps based on debug rules findings
+        - Potential resolutions if found
+
+        **Formatting Rules:**
+        - Use **bold** for error types and key findings
+        - Use `code formatting` for log entries, timestamps, and technical IDs
+        - Include specific counts: "7 UEs affected", "12 timeout events"
+        - Cite evidence using [n]() format from search results
+        - Every factual claim about the logs must be cited
+        - Do not invent log entries or timestamps
+        - Start immediately with findings - no preamble
