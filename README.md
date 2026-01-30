@@ -125,7 +125,7 @@ A technical support assistant specializing in semiconductor product troubleshoot
 
 ---
 
-### 12. Aerospace Issue Disposition Agent (`aerospace_issue_disposition_agent.yaml`)
+### 12. Aerospace Issue Disposition Agent (`aerospace_issue_disposition_agent.yml`)
 Accelerate issue triage and disposition time from 45 minutes per ticket to under 5 minutes using an agent that summarizes evidence, recommends disposition, and drafts ticket updates.
 - **Data Sources**: Issue and defect tickets (Jira, Polarion), test logs and failure artifacts (text files, CSVs)
 - **Historical Context**: Issue resolutions and root-cause analyses (PDFs, wiki pages)
@@ -135,7 +135,7 @@ Accelerate issue triage and disposition time from 45 minutes per ticket to under
 
 ---
 
-### 13. Consulting Proposal Generator (`consulting_proposal_generator.yaml`)
+### 13. Consulting Proposal Generator (`consulting_proposal_generator.yml`)
 Decrease proposal drafting time from multiple days to under 2 hours with an agent that utilizes institutional knowledge, documentation, and historical case work.
 - **Data Sources**: Past proposals and case studies (PowerPoint, Word, PDF), CRM opportunity data and notes
 - **Client Intelligence**: Client research and briefing documents (PDF, HTML)
@@ -145,7 +145,7 @@ Decrease proposal drafting time from multiple days to under 2 hours with an agen
 
 ---
 
-### 14. Pharma Batch Deviation Analyzer (`pharma_batch_deviation_analyzer.yaml`)
+### 14. Pharma Batch Deviation Analyzer (`pharma_batch_deviation_analyzer.yml`)
 Lower batch deviation investigation time from days to hours with an agent that assembles evidence and drafts a deviation analysis for quality review.
 - **Data Sources**: Batch records and manufacturing logs (PDF, CSV), quality system records (QMS exports)
 - **Regulatory Documentation**: SOPs and regulatory documentation (PDF, Word)
