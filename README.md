@@ -125,6 +125,36 @@ A technical support assistant specializing in semiconductor product troubleshoot
 
 ---
 
+### 12. Aerospace Issue Disposition Agent (`aerospace_issue_disposition_agent.yaml`)
+Accelerate issue triage and disposition time from 45 minutes per ticket to under 5 minutes using an agent that summarizes evidence, recommends disposition, and drafts ticket updates.
+- **Data Sources**: Issue and defect tickets (Jira, Polarion), test logs and failure artifacts (text files, CSVs)
+- **Historical Context**: Issue resolutions and root-cause analyses (PDFs, wiki pages)
+- **Knowledge Integration**: Engineering knowledge bases and procedures (Confluence, SharePoint)
+
+**Use Cases**: Issue disposition ticket review, defect triage, disposition recommendations, ticket update drafting
+
+---
+
+### 13. Consulting Proposal Generator (`consulting_proposal_generator.yaml`)
+Decrease proposal drafting time from multiple days to under 2 hours with an agent that utilizes institutional knowledge, documentation, and historical case work.
+- **Data Sources**: Past proposals and case studies (PowerPoint, Word, PDF), CRM opportunity data and notes
+- **Client Intelligence**: Client research and briefing documents (PDF, HTML)
+- **Templates & Pricing**: Pricing models and scope templates (spreadsheets)
+
+**Use Cases**: Proposal drafting, client pitch preparation, scope development, pricing estimation
+
+---
+
+### 14. Pharma Batch Deviation Analyzer (`pharma_batch_deviation_analyzer.yaml`)
+Lower batch deviation investigation time from days to hours with an agent that assembles evidence and drafts a deviation analysis for quality review.
+- **Data Sources**: Batch records and manufacturing logs (PDF, CSV), quality system records (QMS exports)
+- **Regulatory Documentation**: SOPs and regulatory documentation (PDF, Word)
+- **Historical Analysis**: Historical deviation reports (document repositories)
+
+**Use Cases**: Batch deviation investigation, quality review preparation, deviation analysis drafting, compliance documentation
+
+---
+
 ## Template Structure
 
 Each template follows a consistent YAML structure:
