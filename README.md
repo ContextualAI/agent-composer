@@ -4,7 +4,7 @@ This repository contains specialized AI agent templates for various domain-speci
 
 ## Template Catalog
 
-### 1. Deep Research (`deep_research.yml`)
+### 1. [Deep Research](templates/deep_research.yml)
 A comprehensive retrieval-augmented research assistant that conducts thorough, multi-step investigations across document repositories. Follows a structured five-phase protocol:
 - **Query Analysis & Planning**: Decomposes questions into sub-questions and creates search strategies
 - **Broad Discovery**: Maps the information landscape with diverse searches
@@ -16,7 +16,7 @@ A comprehensive retrieval-augmented research assistant that conducts thorough, m
 
 ---
 
-### 2. Demand Forecasting (`demand_forecasting.yml`)
+### 2. [Demand Forecasting](templates/demand_forecasting.yml)
 An intelligent supply chain planning assistant designed for demand planners, inventory managers, and business analysts. Provides end-to-end forecasting capabilities:
 - **Data Sources**: Sales history, inventory levels, supplier information, market reports, forecast accuracy metrics
 - **Analysis Tools**: Statistical forecasting, code execution for calculations, trend visualization
@@ -27,7 +27,7 @@ An intelligent supply chain planning assistant designed for demand planners, inv
 
 ---
 
-### 3. Drilling Operations Advisor (`drilling_operations_advisor.yml`)
+### 3. [Drilling Operations Advisor](templates/drilling_operations_advisor.yml)
 A decision support specialist for oil and gas drilling operations that analyzes real-time drilling data and offset well performance:
 - **Risk Identification**: Stuck pipe, kicks, lost circulation, wellbore instability
 - **Data Analysis**: MWD/LWD data, geological prognosis, alarm sequences, drilling parameters
@@ -38,7 +38,7 @@ A decision support specialist for oil and gas drilling operations that analyzes 
 
 ---
 
-### 4. Equipment Failure Predictive Maintenance (`equipment_failure_predictive_maintenance.yml`)
+### 4. [Equipment Failure Predictive Maintenance](templates/equipment_failure_predictive_maintenance.yml)
 A reliability engineering advisor for industrial facilities that predicts equipment failures before they occur:
 - **Condition Monitoring**: Vibration analysis, oil analysis, thermal imaging, ultrasonic testing
 - **Failure Mode Analysis**: FMEA documents, OEM manuals, historical failure patterns
@@ -49,7 +49,7 @@ A reliability engineering advisor for industrial facilities that predicts equipm
 
 ---
 
-### 5. Fast Search (`fast_search.yaml`)
+### 5. [Fast Search](templates/fast_search.yaml)
 A streamlined, lightweight search template for quick document retrieval and response generation:
 - **Simple Architecture**: Direct search-to-response pipeline without multi-turn research
 - **Fast Performance**: Minimal configuration for rapid queries
@@ -59,7 +59,19 @@ A streamlined, lightweight search template for quick document retrieval and resp
 
 ---
 
-### 6. Patent Reasoning (`patent_reasoning.yaml`)
+### 6. [Log Analysis](templates/log_analysis.yml)
+A telecom log analysis agent that investigates network failures in 3GPP, LTE, 5G NR, and syslog formats:
+- **Log Search**: Finds specific error codes, UE events (by IMSI/IMEI), protocol messages (RRC, S1AP, EMM, NAS)
+- **Root Cause Analysis**: Traces failures to origin events, identifies correlated errors and cascade failures
+- **Debug Rules**: Matches errors to known issues, 3GPP cause codes, and documented resolutions
+- **Network Elements**: Analyzes logs from eNB, gNB, MME, AMF, SGW, PGW
+- **Structured Output**: Executive summary, root causes with evidence, timeline of events, recommendations
+
+**Use Cases**: Telecom network troubleshooting, call failure investigation, RAN optimization, protocol debugging
+
+---
+
+### 7. [Patent Reasoning](templates/patent_reasoning.yaml)
 A specialized patent analysis agent that conducts rigorous legal-technical investigations:
 - **Analysis Types**: Prior art search, claim interpretation, infringement analysis, freedom to operate
 - **Claim Decomposition**: Element-by-element parsing, means-plus-function identification
@@ -70,7 +82,7 @@ A specialized patent analysis agent that conducts rigorous legal-technical inves
 
 ---
 
-### 7. Process Safety Incident Investigator (`process_safety_incident_investigator.yml`)
+### 8. [Process Safety Incident Investigator](templates/process_safety_incident_investigator.yml)
 A systematic incident investigation specialist for chemical and petrochemical facilities:
 - **Investigation Protocol**: Timeline reconstruction, barrier analysis (Swiss Cheese model), root cause identification
 - **Data Sources**: Alarm historian, DCS parameters, P&IDs, HAZOP reports, SOPs, MOC records
@@ -81,7 +93,7 @@ A systematic incident investigation specialist for chemical and petrochemical fa
 
 ---
 
-### 8. Rocket Anomaly Detection (`rocket_anomaly_detection.yml`)
+### 9. [Rocket Anomaly Detection](templates/rocket_anomaly_detection.yml)
 A propulsion anomaly investigation agent for rocket engine test engineers:
 - **Anomaly Characterization**: Identifies performance deviations from expected parameters
 - **Data Integration**: Test telemetry, hardware change logs, manufacturing records, historical anomaly databases
@@ -92,7 +104,7 @@ A propulsion anomaly investigation agent for rocket engine test engineers:
 
 ---
 
-### 9. Rocket Test Readiness Compliance Agent (`rocket_test_readiness_compliance_agent.yml`)
+### 10. [Rocket Test Readiness Compliance Agent](templates/rocket_test_readiness_compliance_agent.yml)
 A Test Readiness Review (TRR) assistant for rocket propulsion testing compliance:
 - **Standards Compliance**: NASA-STD-8719.24, NPR 8715.3, NASA-STD-8719.12, NASA-STD-5012, NASA-STD-8739.8
 - **Verification Checks**: Instrumentation calibration, propellant qualification, safety reviews, personnel certifications
@@ -103,7 +115,7 @@ A Test Readiness Review (TRR) assistant for rocket propulsion testing compliance
 
 ---
 
-### 10. Semiconductor Test Program Generation (`semiconductor_test_program_generation.yml`)
+### 11. [Semiconductor Test Program Generation](templates/semiconductor_test_program_generation.yml)
 A specialized assistant for generating test programs for semiconductor devices:
 - **Documentation Analysis**: Datasheets, test specifications, application notes, pin configurations
 - **Test Program Elements**: Device configuration, test sequences, parametric tests, pass/fail criteria
@@ -114,7 +126,7 @@ A specialized assistant for generating test programs for semiconductor devices:
 
 ---
 
-### 11. Semiconductor Tech Customer Support (`semis_tech_customer_support.yml`)
+### 12. [Semiconductor Tech Customer Support](templates/semis_tech_customer_support.yml)
 A technical support assistant specializing in semiconductor product troubleshooting:
 - **Knowledge Sources**: Product manuals, datasheets, application notes, support case history database
 - **Issue Resolution**: Functional failures, performance degradation, integration challenges, design limitations
@@ -125,7 +137,7 @@ A technical support assistant specializing in semiconductor product troubleshoot
 
 ---
 
-### 12. Aerospace Issue Disposition Agent (`aerospace_issue_disposition_agent.yml`)
+### 13. [Aerospace Issue Disposition Agent](templates/aerospace_issue_disposition_agent.yml)
 Accelerate issue triage and disposition time from 45 minutes per ticket to under 5 minutes using an agent that summarizes evidence, recommends disposition, and drafts ticket updates.
 - **Data Sources**: Issue and defect tickets (Jira, Polarion), test logs and failure artifacts (text files, CSVs)
 - **Historical Context**: Issue resolutions and root-cause analyses (PDFs, wiki pages)
@@ -135,7 +147,7 @@ Accelerate issue triage and disposition time from 45 minutes per ticket to under
 
 ---
 
-### 13. Consulting Proposal Generator (`consulting_proposal_generator.yml`)
+### 14. [Consulting Proposal Generator](templates/consulting_proposal_generator.yml)
 Decrease proposal drafting time from multiple days to under 2 hours with an agent that utilizes institutional knowledge, documentation, and historical case work.
 - **Data Sources**: Past proposals and case studies (PowerPoint, Word, PDF), CRM opportunity data and notes
 - **Client Intelligence**: Client research and briefing documents (PDF, HTML)
@@ -145,7 +157,7 @@ Decrease proposal drafting time from multiple days to under 2 hours with an agen
 
 ---
 
-### 14. Pharma Batch Deviation Analyzer (`pharma_batch_deviation_analyzer.yml`)
+### 15. [Pharma Batch Deviation Analyzer](templates/pharma_batch_deviation_analyzer.yml)
 Lower batch deviation investigation time from days to hours with an agent that assembles evidence and drafts a deviation analysis for quality review.
 - **Data Sources**: Batch records and manufacturing logs (PDF, CSV), quality system records (QMS exports)
 - **Regulatory Documentation**: SOPs and regulatory documentation (PDF, Word)
