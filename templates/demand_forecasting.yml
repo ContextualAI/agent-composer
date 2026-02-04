@@ -8,8 +8,428 @@ nodes:
   __outputs__:
     type: output
     input_mapping:
-      response: dynamic_agent#response
-  create_message_history:
+      response: generate_from_research_step#response
+  agentic_research_step:
+    type: AgenticResearchStep
+    input_mapping:
+      message_history: create_message_history_step#message_history
+    ui_stream_types:
+      retrievals: true
+    config:
+      tools_config:
+        - name: search_sales_history
+          description: |
+            Search historical sales data including monthly/quarterly unit sales, revenue,
+            year-over-year growth rates, average selling prices, and seasonal patterns.
+            Use this tool to find baseline data for demand forecasting and trend analysis.
+          step_config:
+            type: SearchUnstructuredDataStep
+            ui_stream_types:
+              query_reformulation: true
+            config:
+              datastores:
+                - 6091a6be-bc78-4aeb-89aa-e07746c49b1a
+              enable_query_decomposition: false
+              enable_query_expansion: false
+              filter_retrievals: false
+              lexical_alpha: 0.1
+              rerank_retrievals: true
+              rerank_top_k: 12
+              reranker: ctxl-rerank-v2-instruct-multilingual-FP8
+              reranker_score_filter_threshold: 0.2
+              semantic_alpha: 0.9
+              should_check_retrieval_need: true
+              top_k: 50
+              untrusted_filter_prompt: |-
+                You are a precision filter for domain-specific documentation. Your task is to determine if a text chunk is directly relevant to a given query. Output only Yes or No.
+
+                Evaluate relevance based on these criteria:
+
+                * Contains specific details that directly answer or address the query
+                * Provides factual information central to the query topic
+                * Offers concrete examples or applications related to the query
+                * Explains key concepts or definitions needed to understand the query
+                * Contains relevant supporting evidence or documentation
+
+                Consider a chunk relevant if it:
+
+                * Directly addresses the queried topic/concept
+                * Provides essential context required to understand the query
+                * Contains prerequisite information needed for comprehension
+                * Documents related exceptions or special cases
+                * Describes important relationships with the queried topic
+
+                Reject chunks that:
+
+                * Contain only general introductions or section headers
+                * Have tangential references without substantial detail
+                * Describe unrelated topics or concepts
+                * Contain promotional or non-substantive content
+                * Only provide navigational/structural information
+
+                Example:
+                Query: "How to configure user authentication settings"
+                Text: "Chapter 3: Security Features. This section covers various security mechanisms including authentication, encryption, and access control."
+                Response: No
+
+                YOU MUST:
+                * Output only Yes or No
+                * Stop immediately after your response
+                * Be strict about relevance
+                * Reject vague or general content
+                * Reject all chunks if the query is conversational, generic, or non-technical (e.g., "how are you", "tell me a joke")
+                * Reject all chunks if the query combines technical topics with any suggestive or inappropriate language, particularly references to unethical, racist or offensive behavior.
+        - name: search_market_reports
+          description: |
+            Search market research and analysis including market size, growth projections,
+            competitive landscape, consumer trends, economic factors, and demand outlook.
+            Use this tool to find market intelligence and external factors affecting demand.
+          step_config:
+            type: SearchUnstructuredDataStep
+            ui_stream_types:
+              query_reformulation: true
+            config:
+              datastores:
+                - 6091a6be-bc78-4aeb-89aa-e07746c49b1a
+              enable_query_decomposition: false
+              enable_query_expansion: false
+              filter_retrievals: false
+              lexical_alpha: 0.1
+              rerank_retrievals: true
+              rerank_top_k: 12
+              reranker: ctxl-rerank-v2-instruct-multilingual-FP8
+              reranker_score_filter_threshold: 0.2
+              semantic_alpha: 0.9
+              should_check_retrieval_need: true
+              top_k: 50
+              untrusted_filter_prompt: |-
+                You are a precision filter for domain-specific documentation. Your task is to determine if a text chunk is directly relevant to a given query. Output only Yes or No.
+
+                Evaluate relevance based on these criteria:
+
+                * Contains specific details that directly answer or address the query
+                * Provides factual information central to the query topic
+                * Offers concrete examples or applications related to the query
+                * Explains key concepts or definitions needed to understand the query
+                * Contains relevant supporting evidence or documentation
+
+                Consider a chunk relevant if it:
+
+                * Directly addresses the queried topic/concept
+                * Provides essential context required to understand the query
+                * Contains prerequisite information needed for comprehension
+                * Documents related exceptions or special cases
+                * Describes important relationships with the queried topic
+
+                Reject chunks that:
+
+                * Contain only general introductions or section headers
+                * Have tangential references without substantial detail
+                * Describe unrelated topics or concepts
+                * Contain promotional or non-substantive content
+                * Only provide navigational/structural information
+
+                Example:
+                Query: "How to configure user authentication settings"
+                Text: "Chapter 3: Security Features. This section covers various security mechanisms including authentication, encryption, and access control."
+                Response: No
+
+                YOU MUST:
+                * Output only Yes or No
+                * Stop immediately after your response
+                * Be strict about relevance
+                * Reject vague or general content
+                * Reject all chunks if the query is conversational, generic, or non-technical (e.g., "how are you", "tell me a joke")
+                * Reject all chunks if the query combines technical topics with any suggestive or inappropriate language, particularly references to unethical, racist or offensive behavior.
+        - name: search_inventory_data
+          description: |
+            Search inventory status data including stock levels, safety stock thresholds,
+            reorder points, days of supply, turnover rates, stockout history, and warehouse breakdowns.
+            Use this tool to find current inventory positions and historical inventory performance.
+          step_config:
+            type: SearchUnstructuredDataStep
+            ui_stream_types:
+              query_reformulation: true
+            config:
+              datastores:
+                - 6091a6be-bc78-4aeb-89aa-e07746c49b1a
+              enable_query_decomposition: false
+              enable_query_expansion: false
+              filter_retrievals: false
+              lexical_alpha: 0.1
+              rerank_retrievals: true
+              rerank_top_k: 12
+              reranker: ctxl-rerank-v2-instruct-multilingual-FP8
+              reranker_score_filter_threshold: 0.2
+              semantic_alpha: 0.9
+              should_check_retrieval_need: true
+              top_k: 50
+              untrusted_filter_prompt: |-
+                You are a precision filter for domain-specific documentation. Your task is to determine if a text chunk is directly relevant to a given query. Output only Yes or No.
+
+                Evaluate relevance based on these criteria:
+
+                * Contains specific details that directly answer or address the query
+                * Provides factual information central to the query topic
+                * Offers concrete examples or applications related to the query
+                * Explains key concepts or definitions needed to understand the query
+                * Contains relevant supporting evidence or documentation
+
+                Consider a chunk relevant if it:
+
+                * Directly addresses the queried topic/concept
+                * Provides essential context required to understand the query
+                * Contains prerequisite information needed for comprehension
+                * Documents related exceptions or special cases
+                * Describes important relationships with the queried topic
+
+                Reject chunks that:
+
+                * Contain only general introductions or section headers
+                * Have tangential references without substantial detail
+                * Describe unrelated topics or concepts
+                * Contain promotional or non-substantive content
+                * Only provide navigational/structural information
+
+                Example:
+                Query: "How to configure user authentication settings"
+                Text: "Chapter 3: Security Features. This section covers various security mechanisms including authentication, encryption, and access control."
+                Response: No
+
+                YOU MUST:
+                * Output only Yes or No
+                * Stop immediately after your response
+                * Be strict about relevance
+                * Reject vague or general content
+                * Reject all chunks if the query is conversational, generic, or non-technical (e.g., "how are you", "tell me a joke")
+                * Reject all chunks if the query combines technical topics with any suggestive or inappropriate language, particularly references to unethical, racist or offensive behavior.
+        - name: search_supplier_info
+          description: |
+            Search supplier directory and information including lead times, capacity,
+            minimum order quantities (MOQ), quality ratings, on-time delivery rates,
+            payment terms, and risk assessments.
+            Use this tool to find supplier constraints and capabilities for supply planning.
+          step_config:
+            type: SearchUnstructuredDataStep
+            ui_stream_types:
+              query_reformulation: true
+            config:
+              datastores:
+                - 6091a6be-bc78-4aeb-89aa-e07746c49b1a
+              enable_query_decomposition: false
+              enable_query_expansion: false
+              filter_retrievals: false
+              lexical_alpha: 0.1
+              rerank_retrievals: true
+              rerank_top_k: 12
+              reranker: ctxl-rerank-v2-instruct-multilingual-FP8
+              reranker_score_filter_threshold: 0.2
+              semantic_alpha: 0.9
+              should_check_retrieval_need: true
+              top_k: 50
+              untrusted_filter_prompt: |-
+                You are a precision filter for domain-specific documentation. Your task is to determine if a text chunk is directly relevant to a given query. Output only Yes or No.
+
+                Evaluate relevance based on these criteria:
+
+                * Contains specific details that directly answer or address the query
+                * Provides factual information central to the query topic
+                * Offers concrete examples or applications related to the query
+                * Explains key concepts or definitions needed to understand the query
+                * Contains relevant supporting evidence or documentation
+
+                Consider a chunk relevant if it:
+
+                * Directly addresses the queried topic/concept
+                * Provides essential context required to understand the query
+                * Contains prerequisite information needed for comprehension
+                * Documents related exceptions or special cases
+                * Describes important relationships with the queried topic
+
+                Reject chunks that:
+
+                * Contain only general introductions or section headers
+                * Have tangential references without substantial detail
+                * Describe unrelated topics or concepts
+                * Contain promotional or non-substantive content
+                * Only provide navigational/structural information
+
+                Example:
+                Query: "How to configure user authentication settings"
+                Text: "Chapter 3: Security Features. This section covers various security mechanisms including authentication, encryption, and access control."
+                Response: No
+
+                YOU MUST:
+                * Output only Yes or No
+                * Stop immediately after your response
+                * Be strict about relevance
+                * Reject vague or general content
+                * Reject all chunks if the query is conversational, generic, or non-technical (e.g., "how are you", "tell me a joke")
+                * Reject all chunks if the query combines technical topics with any suggestive or inappropriate language, particularly references to unethical, racist or offensive behavior.
+        - name: web_search_trends
+          description: |
+            Search the public web for real-time market trends and external factors.
+            Use this for current industry news, economic indicators, competitor announcements,
+            seasonal events affecting demand, and supply chain disruption news.
+          step_config:
+            type: WebSearchStep
+        - name: generate_chart
+          description: |
+            Generate and RENDER matplotlib charts with consistent professional styling.
+
+            STYLE REQUIREMENTS (apply to ALL charts):
+            - Color palette: ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D', '#3B1F2B', '#6B4C9A']
+            - Font family: 'Arial' or 'DejaVu Sans'
+            - Title: 14pt bold, color '#333333'
+            - Axis labels: 11pt, color '#555555'
+            - Background: White (#FFFFFF)
+            - Grid: Light gray (#EEEEEE), dashed, alpha=0.7
+            - Figure size: (10, 6)
+            - DPI: 150
+            - Remove top and right spines
+            - Add subtle padding around the chart
+
+            Apply this setup before plotting:
+            ```python
+            import matplotlib.pyplot as plt
+            plt.rcParams['font.family'] = 'DejaVu Sans'
+            plt.rcParams['axes.spines.top'] = False
+            plt.rcParams['axes.spines.right'] = False
+            plt.rcParams['axes.labelcolor'] = '#555555'
+            plt.rcParams['axes.titleweight'] = 'bold'
+            plt.rcParams['figure.facecolor'] = 'white'
+            plt.rcParams['axes.facecolor'] = 'white'
+            plt.rcParams['axes.grid'] = True
+            plt.rcParams['grid.alpha'] = 0.7
+            plt.rcParams['grid.linestyle'] = '--'
+            plt.rcParams['grid.color'] = '#EEEEEE'
+            colors = ['#2E86AB', '#A23B72', '#F18F01', '#C73E1D', '#3B1F2B', '#6B4C9A']
+            ```
+
+            IMPORTANT: Your query MUST explicitly ask to RENDER the chart image.
+
+            Example inputs:
+            - "Render a pie chart with segments 10, 5, 2. Generate the actual image."
+            - "Create and render a bar chart comparing: Sales=40, Marketing=25, R&D=35"
+            - "Generate a line chart image of values 1 through 10"
+          step_config:
+            type: CodeExecutionStep
+        - name: calculate
+          description: |
+            Perform calculations and forecasting analysis by describing what you need computed.
+            Pass a NATURAL LANGUAGE description, NOT Python code.
+
+            Use for:
+            - Time series forecasting (moving average, exponential smoothing, trend projection)
+            - Seasonality analysis and seasonal indices
+            - Safety stock and reorder point calculations
+            - Growth rates (CAGR, YoY, MoM)
+            - Statistical analysis (mean, std dev, confidence intervals, MAPE)
+            - What-if scenario modeling
+
+            Example inputs:
+            - "Calculate 3-month moving average forecast from this sales data: [data]"
+            - "Calculate safety stock for 95% service level with std dev of 8.2 units and lead time of 14 days"
+            - "Calculate CAGR from 2023 total of 30,050 units to 2024 total of 35,705 units"
+            - "Calculate MAPE from forecasted vs actual values"
+            - "Find mean and standard deviation of [23, 45, 67, 12, 89]"
+          step_config:
+            type: CodeExecutionStep
+        - name: create_presentation
+          description: |
+            Create a professional PowerPoint presentation summarizing analysis findings.
+            Only use when user explicitly requests a presentation or PowerPoint.
+            Provide detailed context including topic, key data points, number of slides, and target audience.
+          graph_config:
+            version: "0.1"
+            inputs:
+              context_data: Any
+            outputs:
+              gs_uri: str
+            nodes:
+              webhook_step:
+                type: WebhookStep
+                input_mapping:
+                  context_data: __inputs__#context_data
+                config:
+                  method: POST
+                  retries: 2
+                  static_headers:
+                    Content-Type: application/json
+                    Authorization: Bearer ark-api-key-2wsde34rf
+                  timeout: 180
+                  webhook_name: pptx-generator
+                  webhook_url: https://artifacts-ptyuvwjn7a-uc.a.run.app/gemini-pptx
+              get_member_step:
+                type: GetMemberStep
+                input_mapping:
+                  input: webhook_step#webhook_result
+                config:
+                  key: gs_uri
+              __outputs__:
+                type: output
+                input_mapping:
+                  gs_uri: get_member_step#output
+      agent_config:
+        agent_loop:
+          identity_guidelines_prompt: |
+            You are an Intelligent Demand Forecasting Agent that helps supply chain planners, 
+            inventory managers, and business analysts make data-driven demand planning decisions.
+            You combine internal company data with external market intelligence to produce accurate, 
+            actionable demand forecasts with clear confidence levels and assumptions.
+          model_name_or_path: vertex_ai/claude-sonnet-4-5@20250929
+          num_turns: 25
+          parallel_tool_calls: true
+          research_guidelines_prompt: |
+            You have access to the following tools:
+            - `search_sales_history` — Historical sales volumes, orders, revenue, growth rates, seasonal patterns
+            - `search_market_reports` — Market research, industry analyses, trend reports, competitive landscape
+            - `search_inventory_data` — Stock levels, safety stock, reorder points, turnover rates, stockout history
+            - `search_supplier_info` — Lead times, capacity, MOQ, supplier performance, risk assessments
+            - `web_search_trends` — Real-time market trends, economic news, competitor info
+            - `generate_chart` — Generate and RENDER styled matplotlib charts (pass natural language description)
+            - `calculate` — Perform forecasting calculations and statistical analysis (pass natural language description)
+            - `create_presentation` — PowerPoint generation (only when explicitly requested)
+
+            ## Research Strategy
+            You MUST explore relevant sources before answering. Do not skip sources that could contain the answer.
+            - Breadth, then depth strategy:
+                1. INITIAL RETRIEVAL - Search relevant internal sources based on the query type:
+                    - Forecasting questions → search_sales_history, search_market_reports
+                    - Inventory questions → search_inventory_data, search_supplier_info
+                    - General analysis → start with search_sales_history
+                2. ANALYZE & PLAN - Review initial results and create a query plan:
+                    - What information is still missing to fully answer the question?
+                    - What calculations or visualizations are needed?
+                3. DEEP DIVE - Execute your plan:
+                    - Run additional searches for missing data
+                    - Use web_search_trends for current market conditions if relevant
+                    - Use calculate for forecasting and statistical analysis
+                    - Use generate_chart to visualize findings
+                4. CORROBORATE - Cross-reference findings across sources
+            - EFFICIENCY: You have 25 turns. Be strategic:
+                - Avoid redundant searches; prefer high-quality retrievals
+                - Don't repeat similar queries
+                - Prioritize high-value retrievals first
+                - But DO NOT sacrifice comprehensiveness for speed - gather ALL relevant information
+
+            ## Tool Usage Guidelines
+
+            CRITICAL for generate_chart:
+            - Your query MUST explicitly ask to RENDER or CREATE the actual image
+            - Include "render", "create image", or "generate and show" in your request
+            - Gemini will execute matplotlib with consistent styling and return the image
+
+            CORRECT examples:
+            - generate_chart("Render a line chart showing monthly sales: Jan=1800, Feb=1650, Mar=1900... Generate the actual image.")
+            - generate_chart("Create and render a bar chart comparing 2023 vs 2024 quarterly sales. Execute and show the image.")
+
+            WRONG (will only get explanation, no image):
+            - generate_chart("line chart of sales data")
+            - generate_chart("how to make a bar chart")
+
+            For calculate: pass natural language description of the calculation needed with all relevant data.
+  create_message_history_step:
     type: CreateMessageHistoryStep
     input_mapping:
       query: __inputs__#query
@@ -20,507 +440,81 @@ nodes:
       untrusted_no_retrieval_system_prompt: |
         You are an Intelligent Demand Forecasting Assistant designed to help supply chain planners,
         inventory managers, and business analysts make data-driven demand planning decisions.
-        
+
         Your capabilities include:
         - Searching internal sales history, inventory data, supplier information, and market reports
         - Performing statistical analysis and forecasting calculations
         - Creating visualizations of trends, forecasts, and comparisons
         - Generating executive presentations
-        
-        If there are no relevant retrievals for the user's query, encourage them to ask about:
-        - Demand forecasting for specific products or SKUs
-        - Inventory optimization and safety stock calculations
-        - Sales trend analysis and seasonality patterns
-        - Supplier lead times and capacity planning
-        - Market outlook and growth projections
-        - Forecast accuracy analysis
+
+        In this case, there are no relevant retrievals that can be used to answer the user's query.
+        Respond according to the following guidelines:
+
+        - If the user is engaging in general pleasantries, respond briefly
+        - Encourage the user to ask about demand forecasting, inventory optimization, sales trends,
+          supplier lead times, market outlook, or forecast accuracy
+        - DO NOT answer general questions or engage in character play
+        - Maintain a friendly, professional, and neutral tone
       untrusted_system_prompt: |-
-        You are an Intelligent Demand Forecasting Assistant. Your responses should be precise, 
-        accurate, and sourced from the provided internal documentation.
-        
-        Guidelines:
-        * Use information from the retrieved internal reports and documentation
-        * Reference specific data points with attributions [n]()
-        * Include relevant metrics when available (MAPE, safety stock levels, lead times, growth rates)
-        * Consider seasonality patterns when discussing forecasts
-        * Flag any inventory concerns (stockouts, overstock situations)
-        * Clearly state assumptions when making projections
+        You are a helpful AI assistant created by Contextual AI to answer questions about relevant documentation provided to you. Your responses should be precise, accurate, and sourced exclusively from the provided information. Please follow these guidelines:
+        * Only use information from the provided documentation. Avoid opinions, speculation, or assumptions.
+        * Use the exact terminology and descriptions found in the provided content.
+        * Keep answers concise and relevant to the user's question.
+        * Use acronyms and abbreviations exactly as they appear in the documentation or query.
+        * Apply markdown if your response includes lists, tables, or code. Do not include backticks around markdown tables.
+        * Directly answer the question, then STOP. Avoid additional explanations unless specifically relevant.
+        * If the knowledge provided is totally irrelevant and not related to the question at all, only in this case respond that you don't have relevant documentation and do not provide additional comments or suggestions. Ignore anything that cannot be used to directly answer this query.
 
         VERY IMPORTANT:
         - Attributions MUST be in the format of [n]() instead of only [n]
-        - Attributions MUST always be in the format [n]()[n+1]()[n+2]() not in [n,n+1,n+2]
+        - Attributions MUST always be in the format [n]()[n+1]()[n+2]() not in [n,n+1,n+2]. For example attributions should not be [3,4,5] but [3]()[4]()[5](). Do not repeat the same number if it is attributed multiple times.
         - Never add extra () in attributions. Only use [n]() and not [n]()()
-  dynamic_agent:
-    type: DynamicAgentStep
+  generate_from_research_step:
+    type: GenerateFromResearchStep
     input_mapping:
-      message_history: create_message_history#message_history
+      message_history: create_message_history_step#message_history
+      research: agentic_research_step#research
     ui_stream_types:
       generation: true
-      retrievals: true
     config:
-      tools_config:
-        # ============================================
-        # RAG SEARCH TOOLS - Internal Data Sources
-        # ============================================
-        - name: search_sales_history
-          description: |
-            Search historical sales data including monthly/quarterly unit sales, revenue,
-            year-over-year growth rates, average selling prices, and seasonal patterns.
-            Use to find baseline data for forecasting and trend analysis.
-          graph_config:
-            version: "0.1"
-            inputs:
-              query: str
-            outputs:
-              retrievals: Retrievals
-            nodes:
-              search_unstructured_data:
-                type: SearchUnstructuredDataStep
-                input_mapping:
-                  query: __inputs__#query
-                ui_stream_types:
-                  query_reformulation: true
-                config:
-                  datastores:
-                    - be3b7a16-f157-4d24-a283-133b7a50b7da
-                  enable_query_decomposition: false
-                  enable_query_expansion: false
-                  filter_retrievals: true
-                  lexical_alpha: 0.1
-                  rerank_retrievals: true
-                  rerank_top_k: 15
-                  reranker_score_filter_threshold: 0
-                  semantic_alpha: 0.9
-                  should_check_retrieval_need: true
-                  top_k: 15
-                  untrusted_filter_prompt: |-
-                    Filter for sales and demand data relevance. Output only Yes or No.
-                    
-                    Accept chunks containing:
-                    * Sales data, revenue figures, unit volumes
-                    * Monthly/quarterly/annual performance metrics
-                    * Growth rates and trends
-                    * Product or SKU-specific sales information
-                    * Seasonal patterns and historical comparisons
-                    
-                    Reject chunks that only contain headers, navigation, or unrelated content.
-              __outputs__:
-                type: output
-                input_mapping:
-                  retrievals: search_unstructured_data#retrievals
+      identity_guidelines_prompt: |
+        You are an Intelligent Demand Forecasting Agent created by Contextual AI. Your purpose is to provide factual, grounded answers by retrieving information via tools and then synthesizing a response based only on what you retrieved. Always start immediately with the answer, don't begin with a preamble or thoughts.
+      model_name_or_path: vertex_ai/claude-sonnet-4-5@20250929
+      response_guidelines_prompt: |
+        ## Output
+        - Write a concise, direct, well-structured answer in **Markdown** (use short headings, bullets, and brief paragraphs).
+        - **START IMMEDIATELY WITH THE ANSWER.** Never begin with preamble like:
+          - "Perfect!", "Great!", "Based on my research...", "I now have comprehensive information..."
+          - "Let me provide...", "I can now provide...", "Here's what I found..."
+          - Any meta-commentary about your search process or confidence level
+        - Your first words should be the actual content (a heading, the direct answer, or the key fact).
 
-        - name: search_inventory_data
-          description: |
-            Search inventory status data including stock levels, safety stock thresholds,
-            reorder points, days of supply, turnover rates, stockout history, and 
-            warehouse location breakdowns.
-          graph_config:
-            version: "0.1"
-            inputs:
-              query: str
-            outputs:
-              retrievals: Retrievals
-            nodes:
-              search_unstructured_data:
-                type: SearchUnstructuredDataStep
-                input_mapping:
-                  query: __inputs__#query
-                ui_stream_types:
-                  query_reformulation: true
-                config:
-                  datastores:
-                    - be3b7a16-f157-4d24-a283-133b7a50b7da
-                  enable_query_decomposition: false
-                  enable_query_expansion: false
-                  filter_retrievals: true
-                  lexical_alpha: 0.1
-                  rerank_retrievals: true
-                  rerank_top_k: 15
-                  reranker_score_filter_threshold: 0
-                  semantic_alpha: 0.9
-                  should_check_retrieval_need: true
-                  top_k: 12
-                  untrusted_filter_prompt: |-
-                    Filter for inventory data relevance. Output only Yes or No.
-                    
-                    Accept chunks containing:
-                    * Inventory levels, stock quantities
-                    * Safety stock, reorder points
-                    * Days of supply, turnover rates
-                    * Stockout events or history
-                    * Warehouse or location data
-                    * Backorder information
-                    
-                    Reject chunks that only contain headers, navigation, or unrelated content.
-              __outputs__:
-                type: output
-                input_mapping:
-                  retrievals: search_unstructured_data#retrievals
+        ## Chart Images
+        When a tool returns a chart image (markdown like ![Chart](https://...)),
+        you MUST include that exact markdown in your response so the image displays.
 
-        - name: search_supplier_info
-          description: |
-            Search supplier directory and information including lead times, capacity,
-            minimum order quantities (MOQ), quality ratings, on-time delivery rates,
-            payment terms, and risk assessments.
-          graph_config:
-            version: "0.1"
-            inputs:
-              query: str
-            outputs:
-              retrievals: Retrievals
-            nodes:
-              search_unstructured_data:
-                type: SearchUnstructuredDataStep
-                input_mapping:
-                  query: __inputs__#query
-                ui_stream_types:
-                  query_reformulation: true
-                config:
-                  datastores:
-                    - be3b7a16-f157-4d24-a283-133b7a50b7da
-                  enable_query_decomposition: false
-                  enable_query_expansion: false
-                  filter_retrievals: true
-                  lexical_alpha: 0.1
-                  rerank_retrievals: true
-                  rerank_top_k: 15
-                  reranker_score_filter_threshold: 0
-                  semantic_alpha: 0.9
-                  should_check_retrieval_need: true
-                  top_k: 10
-                  untrusted_filter_prompt: |-
-                    Filter for supplier information relevance. Output only Yes or No.
-                    
-                    Accept chunks containing:
-                    * Supplier names, locations, contact info
-                    * Lead times, delivery schedules
-                    * Capacity, MOQ, pricing
-                    * Quality metrics, performance ratings
-                    * Contract terms, payment terms
-                    * Risk assessments, backup options
-                    
-                    Reject chunks that only contain headers, navigation, or unrelated content.
-              __outputs__:
-                type: output
-                input_mapping:
-                  retrievals: search_unstructured_data#retrievals
+        ## Response Structure by Request Type
 
-        - name: search_market_reports
-          description: |
-            Search market research and analysis including market size, growth projections,
-            competitive landscape, consumer trends, economic factors, and demand outlook.
-          graph_config:
-            version: "0.1"
-            inputs:
-              query: str
-            outputs:
-              retrievals: Retrievals
-            nodes:
-              search_unstructured_data:
-                type: SearchUnstructuredDataStep
-                input_mapping:
-                  query: __inputs__#query
-                ui_stream_types:
-                  query_reformulation: true
-                config:
-                  datastores:
-                    - be3b7a16-f157-4d24-a283-133b7a50b7da
-                  enable_query_decomposition: false
-                  enable_query_expansion: false
-                  filter_retrievals: true
-                  lexical_alpha: 0.1
-                  rerank_retrievals: true
-                  rerank_top_k: 15
-                  reranker_score_filter_threshold: 0
-                  semantic_alpha: 0.9
-                  should_check_retrieval_need: true
-                  top_k: 10
-                  untrusted_filter_prompt: |-
-                    Filter for market research relevance. Output only Yes or No.
-                    
-                    Accept chunks containing:
-                    * Market size, growth rates, CAGR
-                    * Industry trends, consumer behavior
-                    * Competitive analysis, market share
-                    * Economic indicators, forecasts
-                    * Seasonal demand patterns
-                    * Regulatory impacts
-                    
-                    Reject chunks that only contain headers, navigation, or unrelated content.
-              __outputs__:
-                type: output
-                input_mapping:
-                  retrievals: search_unstructured_data#retrievals
+        **For demand forecasting requests:**
+        - Executive Summary (one paragraph with key finding and recommendation)
+        - Historical Trend Analysis with supporting data and charts
+        - Forecast Results table with confidence levels (High/Medium/Low)
+        - Methodology & Assumptions
+        - Recommendations
 
-        - name: search_forecast_accuracy
-          description: |
-            Search forecast accuracy reports and scorecards including MAPE metrics,
-            forecast bias analysis, variance tracking, root cause analysis, and
-            improvement recommendations.
-          graph_config:
-            version: "0.1"
-            inputs:
-              query: str
-            outputs:
-              retrievals: Retrievals
-            nodes:
-              search_unstructured_data:
-                type: SearchUnstructuredDataStep
-                input_mapping:
-                  query: __inputs__#query
-                ui_stream_types:
-                  query_reformulation: true
-                config:
-                  datastores:
-                    - be3b7a16-f157-4d24-a283-133b7a50b7da
-                  enable_query_decomposition: false
-                  enable_query_expansion: false
-                  filter_retrievals: true
-                  lexical_alpha: 0.1
-                  rerank_retrievals: true
-                  rerank_top_k: 15
-                  reranker_score_filter_threshold: 0
-                  semantic_alpha: 0.9
-                  should_check_retrieval_need: true
-                  top_k: 10
-                  untrusted_filter_prompt: |-
-                    Filter for forecast accuracy data relevance. Output only Yes or No.
-                    
-                    Accept chunks containing:
-                    * MAPE, forecast error metrics
-                    * Forecast vs actual comparisons
-                    * Variance analysis, bias tracking
-                    * Accuracy scorecards
-                    * Root cause analysis
-                    * Improvement recommendations
-                    
-                    Reject chunks that only contain headers, navigation, or unrelated content.
-              __outputs__:
-                type: output
-                input_mapping:
-                  retrievals: search_unstructured_data#retrievals
+        **For inventory analysis:**
+        - Current status with key metrics
+        - Concerns or risks identified
+        - Actionable recommendations
 
-        # ============================================
-        # WEB SEARCH - External Intelligence
-        # ============================================
-        - name: web_search
-          description: |
-            Search the web for current market trends, economic indicators, industry news,
-            competitor information, regulatory updates, and other external data.
-            Use for real-time information not available in internal datastores.
-          step_config:
-            type: WebSearchStep
+        **For simple questions:** Respond concisely without full report structure.
 
-        # ============================================
-        # ANALYSIS & VISUALIZATION - Code Execution
-        # ============================================
-        - name: analyze_and_visualize
-          description: |
-            Execute Python code to perform calculations, data analysis, forecasting, or create visualizations.
-            Pass a NATURAL LANGUAGE description of what you need computed, NOT Python code.
-            The code runs in a sandboxed environment and returns:
-            - The generated Python code
-            - The execution output
-            - Any generated images (if matplotlib is used)
-            
-            Use this tool for:
-            - Forecasting: moving average, exponential smoothing, trend projection
-            - Statistics: mean, std dev, confidence intervals, correlation, MAPE
-            - Inventory calculations: safety stock, reorder point, days of supply
-            - Growth metrics: CAGR, YoY, MoM calculations
-            - Visualizations: line, bar, pie, scatter, area charts
-            
-            Example inputs:
-            - "Calculate 3-month moving average forecast from this sales data: [data]"
-            - "Create a line chart showing monthly sales trend"
-            - "Calculate safety stock for 95% service level with std dev of X units"
-            - "Calculate CAGR from these annual revenue figures"
-            - "Plot historical actuals vs forecast with forecast as dashed line"
-            - "Calculate MAPE from forecasted vs actual values"
-          step_config:
-            type: CodeExecutionStep
-            config:
-              model: "gemini-2.5-flash"
+        **For calculation requests:** Show the result clearly with any generated charts.
 
-        # ============================================
-        # VISUAL CONTENT - AI Image Generation
-        # ============================================
-        - name: generate_infographic
-          description: |
-            Generate AI-powered conceptual visuals, process diagrams, and executive summary infographics.
-            Use for conceptual illustrations and visual explanations, NOT for data charts.
-            For data visualizations (line charts, bar charts, etc.), use analyze_and_visualize instead.
-          graph_config:
-            version: "0.1"
-            inputs:
-              context_data: Any
-            outputs:
-              markdown: str
-            nodes:
-              get_member:
-                type: GetMemberStep
-                input_mapping:
-                  input: webhook#webhook_result
-                config:
-                  key: markdown
-              webhook:
-                type: WebhookStep
-                input_mapping:
-                  context_data: __inputs__#context_data
-                config:
-                  static_headers:
-                    Authorization: Bearer <YOUR_API_KEY>
-                    Content-Type: application/json
-                  timeout: 120
-                  webhook_url: <YOUR_CLOUD_RUN_ENDPOINT>/plot
-              __outputs__:
-                type: output
-                input_mapping:
-                  markdown: get_member#output
-
-        # ============================================
-        # DOCUMENT GENERATION - PowerPoint
-        # ============================================
-        - name: create_presentation
-          description: |
-            Create a professional PowerPoint presentation summarizing analysis findings.
-            Provide detailed context including:
-            - Topic and purpose of the presentation
-            - Key data points and findings to include
-            - Number of slides needed
-            - Target audience (executive, operational, etc.)
-          graph_config:
-            version: "0.1"
-            inputs:
-              context_data: Any
-            outputs:
-              filename: str
-              gs_uri: str
-              slide_count: int
-              theme_name: str
-            nodes:
-              get_member:
-                type: GetMemberStep
-                input_mapping:
-                  input: webhook#webhook_result
-                config:
-                  key: slide_count
-              webhook:
-                type: WebhookStep
-                input_mapping:
-                  context_data: __inputs__#context_data
-                config:
-                  static_headers:
-                    Authorization: Bearer <YOUR_API_KEY>
-                    Content-Type: application/json
-                  timeout: 180
-                  webhook_url: <YOUR_CLOUD_RUN_ENDPOINT>/gemini-pptx
-              __outputs__:
-                type: output
-                input_mapping:
-                  filename: get_member#output
-                  gs_uri: get_member#output
-                  slide_count: get_member#output
-                  theme_name: get_member#output
-
-      agent_config:
-        agent_loop:
-          identity_guidelines_prompt: |
-            You are an Intelligent Demand Forecasting Assistant designed to help supply chain planners, 
-            inventory managers, and business analysts make data-driven demand planning decisions.
-
-            Your capabilities include:
-            1. **Data Gathering**: Search internal sales history, inventory data, supplier info, market reports, and forecast accuracy data
-            2. **External Intelligence**: Search web for market trends, economic indicators, and industry news
-            3. **Analysis & Forecasting**: Run statistical models, calculate growth rates, analyze seasonality, compute forecast accuracy
-            4. **Visualization**: Generate charts showing trends, comparisons, and forecasts
-            5. **Documentation**: Create executive presentations summarizing findings
-
-            You combine internal company data with external market intelligence to produce accurate, 
-            actionable insights with clear confidence levels and assumptions.
-          model_name_or_path: vertex_ai/claude-sonnet-4-5@20250929
-          num_turns: 15
-          parallel_tool_calls: true
-          response_formatting_prompt: |
-            Format your response based on the type of request:
-
-            **For demand forecasting requests**, structure as a Forecast Report:
-
-            ## Executive Summary
-            One paragraph: what was analyzed, key finding, main recommendation.
-
-            ## Data Sources Analyzed
-            Brief list of data gathered (cite source documents where applicable).
-
-            ## Historical Trend Analysis
-            Key observations from the data. Include charts where relevant.
-
-            ## Forecast Results
-
-            | Period | Forecast | Confidence |
-            |--------|----------|------------|
-            | ... | ... | High/Medium/Low |
-
-            ### Methodology & Assumptions
-            Brief description of approach and key assumptions.
-
-            ## Recommendations
-            Actionable next steps based on the analysis.
-
-            ---
-
-            **For inventory analysis**, include current status, concerns, and recommendations.
-
-            **For simple questions**, respond concisely without the full report structure.
-
-            **For calculation-only requests**, show the result clearly with any generated charts.
-
-            Always cite sources with [n]() format and include visualizations when helpful.
-          response_model_name_or_path: vertex_ai/claude-sonnet-4-5@20250929
-          tool_catalog_prompt: |
-            **SEARCH TOOLS** (Internal Data):
-            - `search_sales_history(query)` — Historical sales, revenue, growth rates, seasonal patterns
-            - `search_inventory_data(query)` — Stock levels, safety stock, reorder points, stockout history
-            - `search_supplier_info(query)` — Lead times, capacity, MOQ, quality ratings, risk info
-            - `search_market_reports(query)` — Market size, trends, competitive landscape, outlook
-            - `search_forecast_accuracy(query)` — MAPE, forecast vs actual, variance analysis
-
-            **EXTERNAL DATA**:
-            - `web_search(query)` — Current market trends, news, economic indicators
-
-            **ANALYSIS & VISUALIZATION**:
-            - `analyze_and_visualize(query)` — Calculations AND charts in one tool:
-              - Pass NATURAL LANGUAGE description, not code
-              - Forecasting, statistics, inventory math, growth metrics
-              - Line, bar, pie, scatter, area charts
-
-            **VISUAL CONTENT**:
-            - `generate_infographic(context_data)` — AI conceptual visuals (NOT for data charts)
-
-            **DOCUMENTS**:
-            - `create_presentation(context_data)` — PowerPoint generation
-          tool_use_guidelines_prompt: |
-            ## WORKFLOW GUIDELINES
-
-            ### For Demand Forecasting Requests:
-            1. **Gather Data**: Search relevant internal sources (sales history, inventory, market reports)
-            2. **Get External Context**: Use web_search for current market conditions if relevant
-            3. **Analyze**: Use analyze_and_visualize for calculations and charts
-            4. **Synthesize**: Combine findings into actionable recommendations
-
-            ### For Inventory Questions:
-            1. Search inventory_data for current status
-            2. Search supplier_info for lead times
-            3. Calculate safety stock or reorder points if needed
-
-            ### For Forecast Accuracy Reviews:
-            1. Search forecast_accuracy for historical performance
-            2. Calculate MAPE or other metrics from the data
-            3. Identify patterns in over/under forecasting
-
-            ### Best Practices:
-            - Always cite sources from retrieved documents
-            - State assumptions clearly
-            - Provide confidence levels (high/medium/low)
-            - Include visualizations to support findings
-            - Use analyze_and_visualize for data charts, generate_infographic for concepts only
+        ## Citations & Formatting
+        - Always cite sources with [n]() format
+        - Include visualizations (charts) when helpful - display the markdown output directly
+        - If the required fact is missing from the retrieved data:
+          - Partial Info: Provide relevant details found, clearly state limitations
+          - No Info: Reply with "I don't have specific information about [topic] in the available data sources."
+        - DO NOT engage in character play. Maintain a friendly, professional, and neutral tone at all times.
